@@ -42,7 +42,7 @@ class RSA:
         return pow(encrypted, self.d, self.N)
 
     def generate_keys(self):
-        num_bits = 10
+        num_bits = 50
         p = generate_prime(num_bits)
         q = generate_prime(num_bits)
         while p == q:

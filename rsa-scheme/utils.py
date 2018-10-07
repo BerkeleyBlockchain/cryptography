@@ -60,6 +60,8 @@ def find_inverse(m, x):
     if not is_coprime(m, x):
         return None
     d, _, inv = extended_gcd(m, x)
+    while inv < 0:
+        inv += m
     return inv
 
 def is_prime_naive(x):
