@@ -14,11 +14,12 @@ class RSA:
         self.p, self.q = self.generate_keys()
         self.N = self.p * self.q
 
-        self.public_key = (self.N, self.e)
         # Totient function (p - 1) * (q - 1) is the # of primes below N = p * q
         self.totient = (self.p - 1) * (self.q - 1)
 
-        self.e = 3 # Arbitrary small prime that is coprime with self.totient
+        # Arbitrary small prime that is coprime with self.totient
+        self.e = generate_coprime(self.totient, max_num=self.totient)
+        self.public_key = (self.N, self.e)
 
         self.d = find_inverse(self.totient, self.e)
 
