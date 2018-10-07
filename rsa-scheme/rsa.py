@@ -29,7 +29,9 @@ class RSA:
             E(x) = x^e mod N
         '''
         assert type(message) == int, 'Must provide an integer message'
-        return (message ** self.e) % self.N
+        print(message, self.e, self.N)
+        print('Encrypted = ', (message ** self.e) % self.N)
+        return pow(message, self.e, self.N)
 
     def decrypt(self, encrypted):
         '''Returns the decryption of a given encryption with the same
@@ -37,7 +39,7 @@ class RSA:
             D(y) = y^d mod N
         '''
         assert type(encrypted) == int, 'Must provide an integer encrypted message'
-        return (encrypted ** self.d) % self.N
+        return pow(encrypted, self.d, self.N)
 
     def generate_keys(self):
         num_bits = 10
