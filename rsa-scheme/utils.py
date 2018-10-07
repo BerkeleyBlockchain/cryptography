@@ -63,7 +63,7 @@ def find_inverse(m, x):
     return inv
 
 def is_prime_naive(x):
-    '''Returns whether or not a number x is prime. O(sqrt(n))
+    '''Returns whether or not a number x is prime. O(sqrt(n)).
 
     >>> is_prime_naive(2)
     True
@@ -89,6 +89,26 @@ def generate_prime(bits=512):
     while not is_prime_naive(prime): # change this to is_prime
         prime = int(getrandbits(bits))
     return prime
+
+def generate_coprime(x, max_num=None):
+    '''Returns the smallest number that is relatively prime to x.
+
+    >>> generate_coprime(40)
+    3
+    >>> generate_coprime(21312)
+    5
+    '''
+
+    check_num = 3
+    while not is_coprime(x, check_num):
+        if max_num and check_num > max_num:
+            return None
+        elif not is_prime_naive(check_num):
+            check_num += 1
+            continue
+        else:
+            check_num += 1
+    return check_num
 
 '''
 def is_prime(x):
