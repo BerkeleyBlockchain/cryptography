@@ -57,3 +57,12 @@ def find_inverse(m, x):
         return None
     d, _, inv = extended_gcd(m, x)
     return inv
+
+def is_prime(x):
+
+def rabin_miller(x):
+    s = x - 1
+    a = random.randint(1, s)
+
+    if pow(a, s) % n = 1:
+        return True
