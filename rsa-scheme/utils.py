@@ -33,3 +33,27 @@ def extended_gcd(x, y):
     else:
         d, a, b = extended_gcd(y, x % y)
         return d, b, a - div(x, y) * b
+
+def is_coprime(a, b):
+    '''Returns whether or not two integers are coprime
+    (which means that a and b only share 1 as a common divisor).
+
+    >>> is_coprime(2, 3)
+    True
+    >>> is_coprime(16, 10)
+    False
+    '''
+    return gcd(a, b) == 1
+
+def find_inverse(m, x):
+    '''Find the inverse of x mod m, if m and x are coprime.
+
+    >>> find_inverse(35, 12)
+    3
+    >>> print(find_inverse(16, 10))
+    None
+    '''
+    if not is_coprime(m, x):
+        return None
+    d, _, inv = extended_gcd(m, x)
+    return inv
