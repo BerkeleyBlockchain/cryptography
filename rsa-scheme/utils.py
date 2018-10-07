@@ -110,14 +110,41 @@ def generate_coprime(x, max_num=None):
             check_num += 1
     return check_num
 
-'''
-def is_prime(x):
-    pass
+def miller_rabin(n, k):
+    if n & 1 == 0:
+        return False
 
-def rabin_miller(x):
-    s = x - 1
-    a = random.randint(1, s)
+    """Write n - 1 as 2^r·d with d odd by factoring powers of 2"""
+    d = n - 1
+    r = 0
+    while d % 2 == 0:
+        d = d / 2
+        r += 1
+    for i in range(k):
+        a = np.random.random_integers(2, n - 2)
+        x = (a**d) % n
 
-    if pow(a, s) % n = 1:
-        return True
-'''
+
+        if x == 1 or x == n - 1:
+            continue
+        for j in range(1, r - 1):
+            x = (x**2) % n
+            if x == 1:
+                return False #composite for sure
+            elif x == n - 1:
+                a = 0 #tracks that loop didn't continue to end
+                break
+        if a:
+            return False
+
+        # """implementation #2"""
+        # if x != 1:
+        #     i = 0
+        #     while x != (n-1):
+        #         if i == r - 1:
+        #             return False
+        #         else:
+        #             i += 1
+        #             x = (x**2) % n
+
+    return True
