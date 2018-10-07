@@ -1,3 +1,6 @@
+'''utils.py'''
+
+from math import sqrt
 
 def gcd(x, y):
     '''Computes the greatest common divisor of x and y.
@@ -58,7 +61,24 @@ def find_inverse(m, x):
     d, _, inv = extended_gcd(m, x)
     return inv
 
+def is_prime_naive(x):
+    '''Returns whether or not a number x is prime. O(sqrt(n))
+
+    >>> is_prime_naive(2)
+    True
+    >>> is_prime_naive(89)
+    True
+    >>> is_prime_naive(100)
+    False
+    '''
+    for i in range(2, int(sqrt(x))):
+        if x % i == 0:
+            return False
+    return True
+
+'''
 def is_prime(x):
+    pass
 
 def rabin_miller(x):
     s = x - 1
@@ -66,3 +86,4 @@ def rabin_miller(x):
 
     if pow(a, s) % n = 1:
         return True
+'''
