@@ -1,6 +1,7 @@
 '''utils.py'''
 
 from math import sqrt
+from random import getrandbits
 
 def gcd(x, y):
     '''Computes the greatest common divisor of x and y.
@@ -71,10 +72,23 @@ def is_prime_naive(x):
     >>> is_prime_naive(100)
     False
     '''
-    for i in range(2, int(sqrt(x))):
+    if x <= 1:
+        return False
+    for i in range(2, int(sqrt(x)) + 1):
         if x % i == 0:
             return False
     return True
+
+def generate_prime(bits=512):
+    '''Returns a random prime number with a specified number of bits.
+
+    >>> is_prime_naive(generate_prime(2))
+    True
+    '''
+    prime = int(getrandbits(bits))
+    while not is_prime_naive(prime): # change this to is_prime
+        prime = int(getrandbits(bits))
+    return prime
 
 '''
 def is_prime(x):
