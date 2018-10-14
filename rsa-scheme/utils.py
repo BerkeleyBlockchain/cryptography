@@ -24,9 +24,9 @@ def div(x, y):
     return (x - x % y) // y
 
 def extended_gcd(x, y):
-    '''Computes the greatest common divisor, as well as integers
-    a and b such that gcd(x, y) = ax + by.
-
+    '''Computes d, the greatest common divisor as well as integers
+    a and b such that gcd(x, y) = ax + by. Returns (d,a,b).
+    
     >>> extended_gcd(35, 12)
     (1, -1, 3)
     >>> extended_gcd(16, 10)
