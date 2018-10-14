@@ -6,6 +6,7 @@ Good intro readings/videos:
 - [Original RSA paper](http://people.csail.mit.edu/rivest/Rsapaper.pdf)
 - https://www.youtube.com/watch?v=wXB-V_Keiu8
 - [Medium article](https://hackernoon.com/how-does-rsa-work-f44918df914b)
+- [UW notes](https://sites.math.washington.edu/~morrow/336_09/papers/Yevgeny.pdf)
 
 Functionality that we need ([Example for reference](https://gist.github.com/JonCooperWorks/5314103)):
 - `gcd(x, y)`: Implement a function to find the GCD for use in determining if two numbers x, y are coprime `gcd(x, y) == 1`
@@ -28,3 +29,11 @@ Read into Dev's suggestions:
 - Protections for different random specialized factoring (attacks trying to find p and q through factoring N = pq)
 - Constant time Montgomery form exponentiation
     - https://en.wikipedia.org/wiki/Montgomery_modular_multiplication
+
+## High Level Summary
+
+Goal: You want to receive ecrypted messages that only you can read.
+
+To do this, you publish a public "lock" that anyone can use to encrypt their message.
+Only you have the private "key" needed to decrypt this "locked" message to access the sender's original message.
+The encrypted message is meaningless to anyone else trying to read it.

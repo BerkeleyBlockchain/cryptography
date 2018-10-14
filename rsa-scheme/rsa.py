@@ -4,13 +4,11 @@ from utils import *
 from random import getrandbits
 
 class RSA:
-    '''Class definition for an RSA scheme.
-
-    Attributes:
-
+    '''RSA scheme.
     '''
 
-    def __init__(self):
+    def __init__(self, user):
+        self.user = user
         self.p, self.q = self.generate_keys()
         self.N = self.p * self.q
 
@@ -23,14 +21,11 @@ class RSA:
 
         self.d = find_inverse(self.totient, self.e)
 
-
     def encrypt(self, message):
         '''Returns the encryption of a given message:
             E(x) = x^e mod N
         '''
         assert type(message) == int, 'Must provide an integer message'
-        print(message, self.e, self.N)
-        print('Encrypted = ', (message ** self.e) % self.N)
         return pow(message, self.e, self.N)
 
     def decrypt(self, encrypted):
@@ -48,3 +43,35 @@ class RSA:
         while p == q:
             q = generate_prime(num_bits)
         return p, q
+
+    def __str__(self):
+        return "{0}'s RSA: \nPublic key pair (N, e) = {1}".format(self.user, self.public_key)
+
+if __name__ == '__main__':
+    name = input('What is your name? ')
+    print('Generating your RSA keys...\n')
+    your_rsa = RSA(name)
+    print(your_rsa)
+    another_rsa = RSA('John DeNero')
+
+    while True:
+        msg = input('What is your message (as an integer)? ')
+        try:
+            msg = int(msg)
+            break
+        except:
+            print('Please enter an integer.')
+            continue
+    encrypted = your_rsa.encrypt(msg)
+    print('Your encrypted message is:', encrypted)
+
+    # Other people can't decrypt your message!
+    wrong_decrypt = another_rsa.decrypt(encrypted)
+
+    print(another_rsa)
+    print(another_rsa.user + ' cannot decrypt your message! He does not have the correct private key pair.')
+    print(wrong_decrypt)
+
+    print('Only you are able to decrypt the message.')
+    print('Your decrypted (original) message is:', your_rsa.decrypt(encrypted))
+
