@@ -37,15 +37,15 @@ class RSA:
         return pow(encrypted, self.d, self.N)
 
     def generate_keys(self):
-        num_bits = 50
-        p = generate_prime(num_bits)
-        q = generate_prime(num_bits)
+        p = generate_prime()
+        q = generate_prime()
         while p == q:
-            q = generate_prime(num_bits)
+            q = generate_prime()
         return p, q
 
     def __str__(self):
         return "{0}'s RSA: \nPublic key pair (N, e) = {1}".format(self.user, self.public_key)
+
 
 if __name__ == '__main__':
     name = input('What is your name? ')
@@ -74,4 +74,3 @@ if __name__ == '__main__':
 
     print('Only you are able to decrypt the message.')
     print('Your decrypted (original) message is:', your_rsa.decrypt(encrypted))
-

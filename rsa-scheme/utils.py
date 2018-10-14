@@ -2,6 +2,7 @@
 
 from math import sqrt
 from random import getrandbits
+import random
 
 def gcd(x, y):
     '''Computes the greatest common divisor of x and y.
@@ -88,7 +89,7 @@ def generate_prime(bits=512):
     True
     '''
     prime = int(getrandbits(bits))
-    while not is_prime_naive(prime): # change this to is_prime
+    while not miller_rabin(prime, 50): # change this to is_prime
         prime = int(getrandbits(bits))
     return prime
 
@@ -101,15 +102,12 @@ def generate_coprime(x, max_num=None):
     5
     '''
 
-    check_num = 3
+    check_num = generate_prime()
     while not is_coprime(x, check_num):
         if max_num and check_num > max_num:
             return None
-        elif not is_prime_naive(check_num):
-            check_num += 1
-            continue
         else:
-            check_num += 1
+            check_num = generate_prime()
     return check_num
 
 def miller_rabin(n, k):
@@ -174,3 +172,5 @@ def miller_rabin(n, k):
             #         else:
             #             i += 1
             #             x = (x**2) % n
+
+print(generate_prime())
