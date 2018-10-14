@@ -30,6 +30,11 @@ Read into Dev's suggestions:
 - Constant time Montgomery form exponentiation
     - https://en.wikipedia.org/wiki/Montgomery_modular_multiplication
 
+Attacks:
+- [Factorization "attack" 512 bit RSA = $75](https://arstechnica.com/information-technology/2015/10/breaking-512-bit-rsa-with-amazon-ec2-is-a-cinch-so-why-all-the-weak-keys/)
+- [Possible RSA attacks](http://www.members.tripod.com/irish_ronan/rsa/attacks.html)
+- [Why factorization takes so long/why is RSA actually secure](http://www.members.tripod.com/irish_ronan/rsa/factorization.html)
+
 ## High Level Summary
 
 Goal: You want to receive ecrypted messages that only you can read.
