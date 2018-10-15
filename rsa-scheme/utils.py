@@ -21,6 +21,11 @@ def gcd(x, y):
 
 def div(x, y):
     '''Returns the number of times a number y divides x.
+
+    >>> div(5, 4)
+    1
+    >>> div(28, 5)
+    5
     '''
     return (x - x % y) // y
 
@@ -65,52 +70,17 @@ def find_inverse(m, x):
         inv += m
     return inv
 
-def is_prime_naive(x):
-    '''Returns whether or not a number x is prime. O(sqrt(n)).
+def is_prime(n, k=50):
+    '''Returns whether a number is prime or not using the Miller-Rabin
+    primality check.
 
-    >>> is_prime_naive(2)
+    >>> is_prime(100005091)
     True
-    >>> is_prime_naive(89)
-    True
-    >>> is_prime_naive(100)
-    False
-    '''
-    if x <= 1:
-        return False
-    for i in range(2, int(sqrt(x)) + 1):
-        if x % i == 0:
-            return False
-    return True
-
-def generate_prime(bits=512):
-    '''Returns a random prime number with a specified number of bits.
-
-    >>> is_prime_naive(generate_prime(2))
+    >>> is_prime(3)
     True
     '''
-    prime = int(getrandbits(bits))
-    while not miller_rabin(prime, 50): # change this to is_prime
-        prime = int(getrandbits(bits))
-    return prime
-
-def generate_coprime(x, max_num=None):
-    '''Returns a number that is relatively prime to x.
-    '''
-
-    check_num = generate_prime()
-    while not is_coprime(x, check_num):
-        if max_num and check_num > max_num:
-            return None
-        else:
-            check_num = generate_prime()
-    return check_num
-
-def miller_rabin(n, k):
-
-
-    if n == 2:
+    if n == 2 or n == 3:
         return True
-
     if n % 2 == 0:
         return False
 
@@ -131,41 +101,42 @@ def miller_rabin(n, k):
             return False
     return True
 
+def is_prime_naive(x):
+    '''Returns whether or not a number x is prime. O(sqrt(n)).
 
-        # if n & 1 == 0:
-        #     return False
-        #
-        # """Write n - 1 as 2^r·d with d odd by factoring powers of 2"""
-        # d = n - 1
-        # r = 0
-        # while d % 2 == 0:
-        #     d = d / 2
-        #     r += 1
-        # for i in range(k):
-        #     a = np.random.random_integers(2, n - 2)
-        #     x = (a**d) % n
-        #
-        #
-        #     if x == 1 or x == n - 1:
-        #         continue
-        #     for j in range(1, r - 1):
-        #         x = (x**2) % n
-        #         if x == 1:
-        #             return False #composite for sure
-        #         elif x == n - 1:
-        #             a = 0 #tracks that loop didn't continue to end
-        #             break
-        #     if a:
-                # return False
+    >>> is_prime_naive(2)
+    True
+    >>> is_prime_naive(89)
+    True
+    >>> is_prime_naive(100)
+    False
+    '''
+    if x <= 1:
+        return False
+    for i in range(2, int(sqrt(x)) + 1):
+        if x % i == 0:
+            return False
+    return True
 
-            # """implementation #2"""
-            # if x != 1:
-            #     i = 0
-            #     while x != (n-1):
-            #         if i == r - 1:
-            #             return False
-            #         else:
-            #             i += 1
-            #             x = (x**2) % n
+def generate_prime(bits=512):
+    '''Returns a random prime number with a specified number of bits.
 
-print(generate_prime())
+    >>> is_prime(generate_prime(2))
+    True
+    '''
+    prime = int(getrandbits(bits))
+    while not is_prime(prime):
+        prime = int(getrandbits(bits))
+    return prime
+
+def generate_coprime(x, max_num=None):
+    '''Returns a number that is relatively prime to x.
+    '''
+
+    check_num = generate_prime()
+    while not is_coprime(x, check_num):
+        if max_num and check_num > max_num:
+            return None
+        else:
+            check_num = generate_prime()
+    return check_num

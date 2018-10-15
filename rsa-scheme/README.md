@@ -40,8 +40,35 @@ Attacks:
 
 ## High Level Summary
 
-Goal: You want to receive ecrypted messages that only you can read.
+*Goal:* You want to receive ecrypted messages that only you can read.
 
 To do this, you publish a public "lock" that anyone can use to encrypt their message.
 Only you have the private "key" needed to decrypt this "locked" message to access the sender's original message.
 The encrypted message is meaningless to anyone else trying to read it.
+
+## Background
+
+### Modular Arithmetic
+
+...
+
+## Implementing RSA
+
+A basic RSA implementation includes the following:
+1. Generation of a public and private key pairs.
+2. Encryption of a given message using the public key.
+3. Decryption to reveal an encrypted message using the private key.
+
+### 1. Generating Public and Private Keys 🔑🗝
+
+First, generate two large prime numbers `p` and `q`. Define a modulus `N` to be the product `p * q`.
+Define the totient of N to be `(p - 1) * (q - 1)`.
+
+Choose an integer `e` that is coprime (shares no common factors other than 1) with `(p - 1) * (q - 1)`.
+Find `d`, the multiplicative inverse of `e mod (p - 1) * (q - 1)`.
+
+Your generated public and private key pairs are `(N, e)` and `(N, d)`, respectively.
+
+### 2. Encrypting a Message
+
+### 3. Decrypting
