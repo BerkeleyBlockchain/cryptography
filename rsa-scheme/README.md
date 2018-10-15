@@ -34,6 +34,9 @@ Attacks:
 - [Factorization "attack" 512 bit RSA = $75](https://arstechnica.com/information-technology/2015/10/breaking-512-bit-rsa-with-amazon-ec2-is-a-cinch-so-why-all-the-weak-keys/)
 - [Possible RSA attacks](http://www.members.tripod.com/irish_ronan/rsa/attacks.html)
 - [Why factorization takes so long/why is RSA actually secure](http://www.members.tripod.com/irish_ronan/rsa/factorization.html)
+- THIS IS WHY YOU NEED PADDING:
+    - `When encrypting with low encryption exponents (e.g., e = 3) and small values of the m, (i.e., m < n1/e) the result of me is strictly less than the modulus n. In this case, ciphertexts can be easily decrypted by taking the eth root of the ciphertext over the integers.`
+    - https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Attacks_against_plain_RSA
 
 ## High Level Summary
 

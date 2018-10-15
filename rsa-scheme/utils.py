@@ -27,7 +27,7 @@ def div(x, y):
 def extended_gcd(x, y):
     '''Computes d, the greatest common divisor as well as integers
     a and b such that gcd(x, y) = ax + by. Returns (d,a,b).
-    
+
     >>> extended_gcd(35, 12)
     (1, -1, 3)
     >>> extended_gcd(16, 10)
@@ -94,12 +94,7 @@ def generate_prime(bits=512):
     return prime
 
 def generate_coprime(x, max_num=None):
-    '''Returns the smallest number that is relatively prime to x.
-
-    >>> generate_coprime(40)
-    3
-    >>> generate_coprime(21312)
-    5
+    '''Returns a number that is relatively prime to x.
     '''
 
     check_num = generate_prime()

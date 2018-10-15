@@ -16,7 +16,7 @@ class RSA:
         self.totient = (self.p - 1) * (self.q - 1)
 
         # Arbitrary small prime that is coprime with self.totient
-        self.e = generate_coprime(self.totient, max_num=self.totient)
+        self.e = generate_coprime(self.totient)
         self.public_key = (self.N, self.e)
 
         self.d = find_inverse(self.totient, self.e)
@@ -46,7 +46,7 @@ class RSA:
     def __str__(self):
         return "{0}'s RSA: \nPublic key pair (N, e) = {1}".format(self.user, self.public_key)
 
-
+"""
 if __name__ == '__main__':
     name = input('What is your name? ')
     print('Generating your RSA keys...\n')
@@ -74,3 +74,4 @@ if __name__ == '__main__':
 
     print('Only you are able to decrypt the message.')
     print('Your decrypted (original) message is:', your_rsa.decrypt(encrypted))
+"""
