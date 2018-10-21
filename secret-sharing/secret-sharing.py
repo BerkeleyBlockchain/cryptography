@@ -5,14 +5,36 @@ sys.path.append('../utils')
 
 from primes import *
 from mod import *
+from random import randint
 
-class SecretShare:
+class SecretSharingScheme:
+    """
+    SecretSharingScheme class
 
-	def __init__(self,secret,minimum,num_shares):
-		self.secret = secret
-		self.minimum = minimum
-		self.num_shares = num_shares
-		generate_random_shares(secret, minimum, num_shares)
+    Attributes:
+        secret (int): The secret number/code that you want to safely distribute.
+        minimum (int): The minimum number of individuals/shares that need to come
+                       together in order to access the secret.
+        num_shares (int): The number of shares distributed.
+        polynomial (list): The secret polynomial P(x) that has randomly chosen
+                           coefficients and P(0) = secret.
+        shares (list): A list of tuples that contains the shares (1, P(1)), (2, P(2)), ..., (n, P(n))
+                       where n = num_shares.
+    """
+    def __init__(self, secret, minimum, num_shares):
+        self.secret = secret
+        self.minimum = minimum
+        self.num_shares = num_shares
+        self.polynomial = [secret] + [randint(1, 100) for i in range(minimum)]
+        self.shares = self.generate_shares()
+
+   def generate_shares(self):
+        """
+        Returns a list of shares (points) that correspond to the secret polynomial
+        such that at least `minimum` people can come together and reconstruct the
+        polynomial P(x) and evaluate the secret P(0) = s.
+        """
+        return [(i, poly_eval(self.polynomial, i)) for i in range(1, self.num_shares + 1)]
 
 def poly_eval(poly, x):
     '''Evaluate a polynomial (represented as a list) at x
@@ -28,42 +50,29 @@ def poly_eval(poly, x):
     return total
 
 def poly_add(a, b):
-    '''Add two polynomials, represented as lists.
-    >>> print(poly_add([1, 2], [3, 4]))
-    [4, 6]
-    >>> print(poly_add([1, 2, 3, 4], [5, 6]))
-    [6, 8, 3, 4]
+    '''
+
     '''
     result = max((a,b), key=len)
     for i in range(min(len(a), len(b))):
         result[i] = (a[i] + b[i])
     return result
 
+print(poly_add([1, 2], [3, 4]))
+print(poly_add([1, 2, 3, 4], [5, 6]))
 
 def poly_scalar_mul(p, c):
-    '''Multiply a polynomial, represented as a list, by a scalar.
-    >>> print(poly_scalar_mul([1, 2], 5))
-    [5, 10]
-    '''
-
-    x = []
     for i in range(len(p)):
-        x.append(p[i] * c)
-    return x
+        p[i] = p[i] * c
 
 def poly_mul(a, b):
-    '''Multiply two polynomials, represented as lists
-    >>> print(poly_mul([1, 2], [2, 3]))
-    [2, 7, 6]
-    >>> print(poly_mul([1, 2, 3, 4], [8, 9]))
-    [8, 25, 42, 59, 36]
-    '''
     i, z = 0, []
     for x in b:
         n = []
         for i in range(i):
             n.append(0)
-        n.extend(poly_scalar_mul(a, x))
+        for j in range(len(a)):
+            n.append(x * a[j])
         z.append(n)
         i += 1
     v = []
@@ -71,7 +80,12 @@ def poly_mul(a, b):
         v = poly_add(v, x)
     return v
 
+print(poly_mul([1, 2], [2, 3]))
+print(poly_mul([1, 2, 3, 4], [8, 9]))
 
+# [1,2]      [2, 3]
+# 1 + 2x     2 + 3x
+# 2 + 7x + 6x^2
 
 def lagrange_interpolation(pairs):
     '''Find the polynomial P, with degree i -1 given a set of i number of points in pairs'''
