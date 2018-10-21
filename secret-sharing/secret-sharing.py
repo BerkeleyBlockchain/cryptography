@@ -103,4 +103,5 @@ def lagrange_interpolation(pairs):
 
 def recover_secret(shares):
     poly = lagrange_interpolation(shares)
-    return shares[0]
+    return poly[len(poly)-1]
+    """figure out if polynomial is forward or backward ie is the first coefficient the coefficient of the 0th degree or of the nth degree"
