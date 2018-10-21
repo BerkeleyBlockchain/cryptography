@@ -89,9 +89,9 @@ print(poly_mul([1, 2, 3, 4], [8, 9]))
 
 def lagrange_interpolation(pairs):
     '''Find the polynomial P, with degree i -1 given a set of i number of points in pairs'''
-    list_of_x = []
-    list_of_y = []
-    for x in len(pairs):
-        list_of_x = list_of_x + x[0]
-    for y in len(pairs):
-        list_of_y = list_of_y + y[1]
+    
+    poly_list = []
+    for i in range(1, len(pairs)):
+        new_list = generate_polynomial(i, pairs)
+        poly_list = poly_add(poly_list,new_list)
+    return poly_list
