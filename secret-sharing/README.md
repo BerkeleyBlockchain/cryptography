@@ -8,7 +8,7 @@ Reading:
 - Attacks with random different specialized factoring algorithms (http://www.tcs.hut.fi/Studies/T-79.5501/2008SPR/lectures/out08.pdf).
 
 Functionality:
-- `lagrange_interpolation`: Find the corresponding y value of a given x, given a certain number of x, y points which represent a polynomial.
+- `lagrange_interpolation`: Find the corresponding y value of a given x, given a certain number of x, y points which represent a polynomial.=
     - `div_mod` Computes the result of dividing a number by another number in a given modulo.
     - `extended_GCD` Computes the inverse of a number in a modulo. To be used in `div_mod`.
 - `generate_random_shares`: generate random shares that each represent a point on a polynomial.
