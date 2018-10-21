@@ -50,29 +50,40 @@ def poly_eval(poly, x):
     return total
 
 def poly_add(a, b):
-    '''
-
+    '''Add two polynomials, represented as lists.
+    >>> print(poly_add([1, 2], [3, 4]))
+    [4, 6]
+    >>> print(poly_add([1, 2, 3, 4], [5, 6]))
+    [6, 8, 3, 4]
     '''
     result = max((a,b), key=len)
     for i in range(min(len(a), len(b))):
         result[i] = (a[i] + b[i])
     return result
 
-print(poly_add([1, 2], [3, 4]))
-print(poly_add([1, 2, 3, 4], [5, 6]))
-
 def poly_scalar_mul(p, c):
+    '''Multiply a polynomial, represented as a list, by a scalar.
+    >>> print(poly_scalar_mul([1, 2], 5))
+    [5, 10]
+    '''
+    x = []
     for i in range(len(p)):
-        p[i] = p[i] * c
+        x.append(p[i] * c)
+    return x
 
 def poly_mul(a, b):
+    '''Multiply two polynomials, represented as lists
+    >>> print(poly_mul([1, 2], [2, 3]))
+    [2, 7, 6]
+    >>> print(poly_mul([1, 2, 3, 4], [8, 9]))
+    [8, 25, 42, 59, 36]
+    '''
     i, z = 0, []
     for x in b:
         n = []
         for i in range(i):
             n.append(0)
-        for j in range(len(a)):
-            n.append(x * a[j])
+        n.extend(poly_scalar_mul(a, x))
         z.append(n)
         i += 1
     v = []
@@ -80,12 +91,6 @@ def poly_mul(a, b):
         v = poly_add(v, x)
     return v
 
-print(poly_mul([1, 2], [2, 3]))
-print(poly_mul([1, 2, 3, 4], [8, 9]))
-
-# [1,2]      [2, 3]
-# 1 + 2x     2 + 3x
-# 2 + 7x + 6x^2
 
 def lagrange_interpolation(pairs):
     '''Find the polynomial P, with degree i -1 given a set of i number of points in pairs'''
@@ -95,3 +100,8 @@ def lagrange_interpolation(pairs):
         list_of_x = list_of_x + x[0]
     for y in len(pairs):
         list_of_y = list_of_y + y[1]
+
+def recover_secret(shares):
+
+    poly = lagrange_interpolation(shares)
+    return poly[0]
