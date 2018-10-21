@@ -100,3 +100,7 @@ def lagrange_interpolation(pairs):
         new_list = generate_polynomial(i, pairs)
         poly_list = poly_add(poly_list,new_list)
     return poly_list
+
+def recover_secret(shares):
+    poly = lagrange_interpolation(shares)
+    return shares[0]
