@@ -1,4 +1,4 @@
-
+"""secret-sharing.py"""
 import random
 
 class SecretShare:
@@ -51,11 +51,4 @@ class SecretShare:
 
 	def lagrange-interpolation(pairs):
 		'''Find the polynomial P, with degree i -1 given a set of i number of points in pairs'''
-
-
-
-
-
-
-
 

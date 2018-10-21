@@ -1,7 +1,10 @@
 """rsa.py"""
 
-from utils import *
-from random import getrandbits
+import sys
+sys.path.append('../utils')
+
+from primes import *
+from mod import *
 
 class RSA:
     """
