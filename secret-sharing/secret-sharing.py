@@ -1,41 +1,61 @@
 
 import random
 
-def div_mod(num, denom, p):
-    '''Compute num / denom in modulo p
+class SecretShare:
 
-    >>> div_mod(3, 5, 2)
-    1
-
-    '''
-
-    inv = find_inverse(p, denom)
-    return num * inv
+	def __init__(self,secret,minimum,num_shares):
+		self.secret = secret
+		self.minimum = minimum
+		self.num_shares = num_shares
+		generate_random_shares(secret, minimum, num_shares)
 
 
-def generate_random_shares(secret, minimum, num_shares):
 
-    assert minimum < shares, "Minimum shares must be less than total shares)"
-    poly = [secret] + [generate_prime() for i in range(minimum)]
+	def div_mod(num, denom, p):
+	    '''Compute num / denom in modulo p
 
-    shares = [(i, poly_eval(poly, i)) for i in range(1, num_shares + 1)]
+	    >>> div_mod(3, 5, 2)
+	    1
 
-    return shares
+	    '''
+
+	    inv = find_inverse(p, denom)
+	    return num * inv
 
 
-def poly_eval(poly, x):
-    '''Evaluate a polynomial (represented as a list) at x
+	def generate_random_shares(secret, minimum, num_shares):
 
-    >>> poly_eval([1, 2, 3], 4)
-    57
+	    assert minimum < shares, "Minimum shares must be less than total shares)"
+	    poly = [secret] + [generate_prime() for i in range(minimum)]
 
-    >>> poly_eval([50, 60, 70], 2)
-    450
+	    shares = [(i, poly_eval(poly, i)) for i in range(1, num_shares + 1)]
 
-    '''
+	    return shares
 
-    sum, i = 0, 0
-    for coef in poly:
-        sum += coef * pow(x, i)
-        i += 1
-    return sum
+
+	def poly_eval(poly, x):
+	    '''Evaluate a polynomial (represented as a list) at x
+
+	    >>> poly_eval([1, 2, 3], 4)
+	    57
+
+	    >>> poly_eval([50, 60, 70], 2)
+	    450
+
+	    '''
+	    sum, i = 0, 0
+	    for coef in poly:
+	    	sum += coef * pow(x, i)
+	    	i += 1
+	    return sum
+
+	def lagrange-interpolation(pairs):
+		'''Find the polynomial P, with degree i -1 given a set of i number of points in pairs'''
+
+
+
+
+
+
+
+
