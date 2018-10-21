@@ -1,17 +1,10 @@
+"""secret-sharing.py"""
 
-import random
+import sys
+sys.path.append('../utils')
 
-def div_mod(num, denom, p):
-    '''Compute num / denom in modulo p
-
-    >>> div_mod(3, 5, 2)
-    1
-
-    '''
-
-    inv = find_inverse(p, denom)
-    return num * inv
-
+from primes import *
+from mod import *
 
 def generate_random_shares(secret, minimum, num_shares):
 
@@ -21,7 +14,6 @@ def generate_random_shares(secret, minimum, num_shares):
     shares = [(i, poly_eval(poly, i)) for i in range(1, num_shares + 1)]
 
     return shares
-
 
 def poly_eval(poly, x):
     '''Evaluate a polynomial (represented as a list) at x
@@ -33,9 +25,8 @@ def poly_eval(poly, x):
     450
 
     '''
-
-    sum, i = 0, 0
+    total, i = 0, 0
     for coef in poly:
-        sum += coef * pow(x, i)
+        total += coef * pow(x, i)
         i += 1
-    return sum
+    return total

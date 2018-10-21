@@ -56,7 +56,7 @@ def is_coprime(a, b):
 
 def find_inverse(m, x):
     """
-    Find the inverse of x mod m, if m and x are coprime.
+    Finds the inverse of x mod m, if m and x are coprime.
 
     >>> find_inverse(35, 12)
     3
@@ -69,3 +69,13 @@ def find_inverse(m, x):
     while inv < 0:
         inv += m
     return inv
+
+def div_mod(num, denom, p):
+    """
+    Computes numerator / denominator in modulo p.
+
+    >>> div_mod(3, 5, 2)
+    1
+    """
+    inv = find_inverse(p, denom)
+    return num * inv
