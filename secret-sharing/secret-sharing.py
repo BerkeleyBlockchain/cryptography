@@ -1,5 +1,7 @@
 """secret-sharing.py"""
 
+import numpy as np
+
 import sys
 sys.path.append('../utils')
 
@@ -90,6 +92,22 @@ def poly_mul(a, b):
     for x in z:
         v = poly_add(v, x)
     return v
+
+
+
+def generate_polynomial(i, pairs):
+    denominator = 1
+    xS = [a[0] for a in pairs]
+    yS = [a[1] for a in pairs]
+    xI = xS[i-1]
+    factors = []
+    for x in xS[0:i-1]+xS[i:]:
+        denominator *= (xI - x)
+        factors.append([1,-x])
+    print(denominator)
+
+    numerator = np.polymul(*factors)
+    answer = numerator / denominator
 
 
 def lagrange_interpolation(pairs):
