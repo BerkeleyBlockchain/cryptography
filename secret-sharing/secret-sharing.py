@@ -49,6 +49,13 @@ class SecretShare:
 	    	i += 1
 	    return sum
 
-	def lagrange-interpolation(pairs):
+	def lagrange_interpolation(pairs):
 		'''Find the polynomial P, with degree i -1 given a set of i number of points in pairs'''
+		list_of_x = []
+		list_of_y = []
+		for x in len(pairs):
+			list_of_x = list_of_x + x[0]
+		for y in len(pairs):
+			list_of_y = list_of_y + y[1]
+
 
