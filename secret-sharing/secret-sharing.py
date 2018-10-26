@@ -1,5 +1,7 @@
 """secret-sharing.py"""
 
+import numpy as np
+
 import sys
 sys.path.append('../utils')
 
@@ -91,6 +93,20 @@ def poly_mul(a, b):
         v = poly_add(v, x)
     return v
 
+def generate_polynomial(i, pairs):
+    denominator = 1
+    xS = [a[0] for a in pairs]
+    yS = [a[1] for a in pairs]
+    xI = xS[i-1]
+    factors = []
+    for x in xS[0:i-1]+xS[i:]:
+        denominator *= (xI - x)
+        factors.append([1,-x])
+    print(denominator)
+
+    numerator = np.polymul(*factors)
+    answer = numerator / denominator
+
 def lagrange_interpolation(pairs):
     '''Find the polynomial P, with degree i - 1 given a set of i number of points in pairs'''
 
@@ -100,9 +116,15 @@ def lagrange_interpolation(pairs):
         poly_list = poly_add(poly_list,new_list)
     return poly_list
 
+def recover_secret(shares):
+    poly = lagrange_interpolation(shares)
+    return poly[len(poly)-1]
+    """figure out if polynomial is forward or backward ie is the first coefficient the coefficient of the 0th degree or of the nth degree"""
+
 if __name__ == '__main__':
     secret = input('Enter a secret code (as an integer): ')
     num_shares = input('Enter the number of shares you want to give out: ')
     minimum = input('Enter the minimum number of people needed to access the secret: ')
 
     s = SecretSharingScheme(secret, minimum, num_shares)
+
