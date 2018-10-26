@@ -91,12 +91,18 @@ def poly_mul(a, b):
         v = poly_add(v, x)
     return v
 
-
 def lagrange_interpolation(pairs):
-    '''Find the polynomial P, with degree i -1 given a set of i number of points in pairs'''
+    '''Find the polynomial P, with degree i - 1 given a set of i number of points in pairs'''
 
     poly_list = []
     for i in range(1, len(pairs)):
         new_list = generate_polynomial(i, pairs)
         poly_list = poly_add(poly_list,new_list)
     return poly_list
+
+if __name__ == '__main__':
+    secret = input('Enter a secret code (as an integer): ')
+    num_shares = input('Enter the number of shares you want to give out: ')
+    minimum = input('Enter the minimum number of people needed to access the secret: ')
+
+    s = SecretSharingScheme(secret, minimum, num_shares)
