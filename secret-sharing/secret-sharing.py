@@ -23,14 +23,15 @@ class SecretSharingScheme:
         shares (list): A list of tuples that contains the shares (1, P(1)), (2, P(2)), ..., (n, P(n))
                        where n = num_shares.
     """
+
     def __init__(self, secret, minimum, num_shares):
         self.secret = secret
         self.minimum = minimum
         self.num_shares = num_shares
-        self.polynomial = [secret] + [randint(1, 100) for i in range(minimum)]
-        self.shares = self.generate_shares()
+        #self.polynomial = [secret] + [randint(1, 100) for i in range(minimum)]
+        #self.shares = self.generate_shares()
 
-   def generate_shares(self):
+    def generate_shares(self):
         """
         Returns a list of shares (points) that correspond to the secret polynomial
         such that at least `minimum` people can come together and reconstruct the
@@ -50,6 +51,38 @@ def poly_eval(poly, x):
         total += coef * pow(x, i)
         i += 1
     return total
+
+def generate_polynomial(i, pairs):
+    denominator = 1
+    xS = [a[0] for a in pairs]
+    yS = [a[1] for a in pairs]
+    xI = xS[i-1]
+    factors = []
+    for x in xS[0:i-1]+xS[i:]:
+        denominator *= (xI - x)
+        factors.append([1,-x])
+
+    numerator = np.polymul(*factors)
+    answer = numerator / denominator
+    return answer
+
+def lagrange_interpolation(pairs):
+    '''Find the polynomial P, with degree i - 1 given a set of i number of points in pairs'''
+
+    poly = []
+    yS = [a[1] for a in pairs]
+    for i in range(1, len(pairs)+1):
+        new = generate_polynomial(i, pairs)
+        print(new)
+        poly = np.polyadd(poly, yS[i-1]*new)
+
+    return poly
+
+def recover_secret(shares):
+    poly = lagrange_interpolation(shares)
+    return poly[len(poly)-1]
+    """figure out if polynomial is forward or backward ie is the first coefficient the coefficient of the 0th degree or of the nth degree"""
+
 
 def poly_add(a, b):
     '''Add two polynomials, represented as lists.
@@ -93,38 +126,10 @@ def poly_mul(a, b):
         v = poly_add(v, x)
     return v
 
-def generate_polynomial(i, pairs):
-    denominator = 1
-    xS = [a[0] for a in pairs]
-    yS = [a[1] for a in pairs]
-    xI = xS[i-1]
-    factors = []
-    for x in xS[0:i-1]+xS[i:]:
-        denominator *= (xI - x)
-        factors.append([1,-x])
-    print(denominator)
-
-    numerator = np.polymul(*factors)
-    answer = numerator / denominator
-
-def lagrange_interpolation(pairs):
-    '''Find the polynomial P, with degree i - 1 given a set of i number of points in pairs'''
-
-    poly_list = []
-    for i in range(1, len(pairs)):
-        new_list = generate_polynomial(i, pairs)
-        poly_list = poly_add(poly_list,new_list)
-    return poly_list
-
-def recover_secret(shares):
-    poly = lagrange_interpolation(shares)
-    return poly[len(poly)-1]
-    """figure out if polynomial is forward or backward ie is the first coefficient the coefficient of the 0th degree or of the nth degree"""
-
 if __name__ == '__main__':
-    secret = input('Enter a secret code (as an integer): ')
-    num_shares = input('Enter the number of shares you want to give out: ')
-    minimum = input('Enter the minimum number of people needed to access the secret: ')
+    #secret = input('Enter a secret code (as an integer): ')
+    #num_shares = input('Enter the number of shares you want to give out: ')
+    #minimum = input('Enter the minimum number of people needed to access the secret: ')
 
-    s = SecretSharingScheme(secret, minimum, num_shares)
+    #s = SecretSharingScheme(secret, minimum, num_shares)
 
