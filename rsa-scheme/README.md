@@ -111,15 +111,20 @@ Your decrypted (original) message is: Blockchain at Berkeley 🙌
 
 ## High Level Summary
 
-*Goal:* You want to receive ecrypted messages that only you can read.
+**Goal:** You want to receive ecrypted messages that only you can read.
 
 To do this, you publish a public "lock" that anyone can use to encrypt their message.
 Only you have the private "key" needed to decrypt this "locked" message to access the sender's original message.
 The encrypted message is meaningless to anyone else trying to read it.
 
-## Background
+Think of this "lock" as a function `E` that takes in an integer and outputs the encrypted version. Think of the "key" as a function `D` that takes in an encryption and returns the original message. These two functions are inverses, so the following holds:
+`D(E(x)) == x`.
 
-### Modular Arithmetic
+However, since we don't want everyone to have access to the message, we need to find a special function `E`, such that it is practically infeasible to find the inverse without knowing some information beforehand.
+In other words, unless you are the owner of the "lock" and "key", you shouldn't be able to come up with the function `D` that reveals the original message.
+To accomplish this, we can use modular arithmetic.
+
+## Modular Arithmetic
 
 ...
 

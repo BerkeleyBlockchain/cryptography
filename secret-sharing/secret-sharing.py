@@ -16,20 +16,20 @@ class SecretSharingScheme:
     Attributes:
         secret (int): The secret number/code that you want to safely distribute.
         minimum (int): The minimum number of individuals/shares that need to come
-                       together in order to access the secret.
+                        together in order to access the secret.
         num_shares (int): The number of shares distributed.
         polynomial (list): The secret polynomial P(x) that has randomly chosen
-                           coefficients and P(0) = secret.
+                            coefficients and P(0) = secret.
         shares (list): A list of tuples that contains the shares (1, P(1)), (2, P(2)), ..., (n, P(n))
-                       where n = num_shares.
+                        where n = num_shares.
     """
 
     def __init__(self, secret, minimum, num_shares):
         self.secret = secret
         self.minimum = minimum
         self.num_shares = num_shares
-        #self.polynomial = [secret] + [randint(1, 100) for i in range(minimum)]
-        #self.shares = self.generate_shares()
+        self.polynomial = [randint(1, 100) for i in range(minimum - 1)] + [secret]
+        self.shares = self.generate_shares()
 
     def generate_shares(self):
         """
@@ -127,9 +127,9 @@ def poly_mul(a, b):
     return v
 
 if __name__ == '__main__':
-    #secret = input('Enter a secret code (as an integer): ')
-    #num_shares = input('Enter the number of shares you want to give out: ')
-    #minimum = input('Enter the minimum number of people needed to access the secret: ')
+    secret = int(input('Enter a secret code (as an integer): '))
+    num_shares = int(input('Enter the number of shares you want to give out: '))
+    minimum = int(input('Enter the minimum number of people needed to access the secret: '))
 
-    #s = SecretSharingScheme(secret, minimum, num_shares)
+    s = SecretSharingScheme(secret, minimum, num_shares)
 
