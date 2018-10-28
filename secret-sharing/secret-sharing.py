@@ -12,7 +12,6 @@ from random import randint
 class SecretSharingScheme:
     """
     SecretSharingScheme class
-
     Attributes:
         secret (int): The secret number/code that you want to safely distribute.
         minimum (int): The minimum number of individuals/shares that need to come
@@ -106,4 +105,3 @@ if __name__ == '__main__':
     minimum = int(input('Enter the minimum number of people needed to access the secret: '))
 
     s = SecretSharingScheme(secret, minimum, num_shares)
-
