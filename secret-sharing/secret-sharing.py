@@ -115,5 +115,5 @@ if __name__ == '__main__':
 
     print("Performing Lagrange interpolation with your inputs...")
     test = s.shares[:m]
-    print("Inputs: " + test)
+    print("Inputs: " + str(test))
     print("SECRET: " + str(recover_secret(test)))
