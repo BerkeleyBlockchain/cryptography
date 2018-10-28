@@ -23,12 +23,11 @@ class SecretSharingScheme:
         shares (list): A list of tuples that contains the shares (1, P(1)), (2, P(2)), ..., (n, P(n))
                         where n = num_shares.
     """
-
     def __init__(self, secret, minimum, num_shares):
         self.secret = secret
         self.minimum = minimum
         self.num_shares = num_shares
-        self.polynomial = [randint(1, 100) for i in range(minimum - 1)] + [secret]
+        self.polynomial = [secret] + [randint(1, 100) for i in range(minimum - 1)]
         self.shares = self.generate_shares()
 
     def generate_shares(self):
@@ -60,45 +59,46 @@ def generate_polynomial(i, pairs):
     factors = []
     for x in xS[0:i-1]+xS[i:]:
         denominator *= (xI - x)
-        factors.append([1,-x])
+        factors.append([1, -x])
 
     numerator = poly_mul(factors)
     answer = numerator / denominator
     return answer
 
-def lagrange_interpolation(pairs):
-    '''Find the polynomial P, with degree i - 1 given a set of i number of points in pairs'''
+def lagrange_interpolation(points):
+    """
+    Find the polynomial P, with degree d given a list of d + 1 points.
+    The argument `points` needs to contain at least 2 points.
+
+    >>> points = [(1, 1), (2, 2), (3, 4)]
+    >>> lagrange_interpolation(points)
+    array([ 1. , -0.5,  0.5])
+    """
+    assert isinstance(points, list) and len(points) > 1, 'Error: argument needs to contain at least two points'
 
     poly = []
-    yS = [a[1] for a in pairs]
-    for i in range(1, len(pairs)+1):
-        new = generate_polynomial(i, pairs)
-        print(new)
-        poly = np.polyadd(poly, yS[i-1]*new)
-
-    return poly
+    y = [point[1] for point in points]
+    for i in range(1, len(points) + 1):
+        new = generate_polynomial(i, points)
+        poly = np.polyadd(poly, y[i - 1] * new)
+    return poly[::-1]
 
 def recover_secret(shares):
     poly = lagrange_interpolation(shares)
-    return poly[len(poly)-1]
-    """figure out if polynomial is forward or backward ie is the first coefficient the coefficient of the 0th degree or of the nth degree"""
+    return int(poly[0])
 
 def poly_mul(factors):
-    '''Multiply two polynomials, represented as lists
-    >>> print(poly_mul([1, 2], [2, 3]))
-    [2, 7, 6]
-    >>> print(poly_mul([1, 2, 3, 4], [8, 9]))
-    [8, 25, 42, 59, 36]
-    '''
+    """
+
+    """
+
     v = None
     for a in factors:
         if v is None:
             v = a
         else:
             v = np.polymul(v, a)
-
     return v
-
 
 if __name__ == '__main__':
     secret = int(input('Enter a secret code (as an integer): '))
@@ -106,4 +106,8 @@ if __name__ == '__main__':
     minimum = int(input('Enter the minimum number of people needed to access the secret: '))
 
     s = SecretSharingScheme(secret, minimum, num_shares)
+    print(s.polynomial)
+    print(s.shares)
+    test = s.shares[:minimum]
 
+    print(recover_secret(test))
