@@ -50,17 +50,28 @@ def poly_eval(poly, x):
         i += 1
     return total
 
-def generate_polynomial(i, pairs):
+def generate_delta(i, pairs):
+    """
+    Compute the delta function of index i given a set of points. This is an
+    intermediary step in lagrange multiplication that calculates a polynomial
+    with respect to the ith point in the set.
+
+    >>> points = [(1, 1), (2, 2), (3, 4)]
+    >>> generate_delta(1, [(1, 1), (2, 2), (3, 4)])
+    array([ 0.5, -2.5,  3. ])
+    """
+    assert i > 0 and i <= len(pairs), 'Error: index i needs to be in range (0, n]'
+
     denominator = 1
     xS = [a[0] for a in pairs]
     yS = [a[1] for a in pairs]
-    xI = xS[i-1]
+    xI = xS[i - 1]
     factors = []
-    for x in xS[0:i-1]+xS[i:]:
+    for x in xS[0:i - 1] + xS[i:]:
         denominator *= (xI - x)
         factors.append([1, -x])
 
-    numerator = poly_mul(factors)
+    numerator = multiply_factors(factors)
     answer = numerator / denominator
     return answer
 
@@ -78,7 +89,7 @@ def lagrange_interpolation(points):
     poly = []
     y = [point[1] for point in points]
     for i in range(1, len(points) + 1):
-        new = generate_polynomial(i, points)
+        new = generate_delta(i, points)
         poly = np.polyadd(poly, y[i - 1] * new)
     return poly[::-1]
 
@@ -86,11 +97,17 @@ def recover_secret(shares):
     poly = lagrange_interpolation(shares)
     return int(poly[0])
 
-def poly_mul(factors):
+def multiply_factors(factors):
     """
+    Creates a polynomial f(x) from factors such that f(x) = (x - c_1) * ... * (x - c_p)
+    where c_1, ..., c_p are the factors.
+    The argument `factors` is a list of lists (polynomial coefficients) to be multiplied
+    together.
 
+    >>> factors = [[1, -2], [1, -3]]
+    >>> multiply_factors(factors)
+    array([ 1, -5,  6])
     """
-
     v = None
     for a in factors:
         if v is None:
