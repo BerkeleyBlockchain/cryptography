@@ -62,7 +62,7 @@ def generate_polynomial(i, pairs):
         denominator *= (xI - x)
         factors.append([1,-x])
 
-    numerator = np.polymul(*factors)
+    numerator = poly_mul(factors)
     answer = numerator / denominator
     return answer
 
@@ -83,48 +83,22 @@ def recover_secret(shares):
     return poly[len(poly)-1]
     """figure out if polynomial is forward or backward ie is the first coefficient the coefficient of the 0th degree or of the nth degree"""
 
-
-def poly_add(a, b):
-    '''Add two polynomials, represented as lists.
-    >>> print(poly_add([1, 2], [3, 4]))
-    [4, 6]
-    >>> print(poly_add([1, 2, 3, 4], [5, 6]))
-    [6, 8, 3, 4]
-    '''
-    result = max((a,b), key=len)
-    for i in range(min(len(a), len(b))):
-        result[i] = (a[i] + b[i])
-    return result
-
-def poly_scalar_mul(p, c):
-    '''Multiply a polynomial, represented as a list, by a scalar.
-    >>> print(poly_scalar_mul([1, 2], 5))
-    [5, 10]
-    '''
-    x = []
-    for i in range(len(p)):
-        x.append(p[i] * c)
-    return x
-
-def poly_mul(a, b):
+def poly_mul(factors):
     '''Multiply two polynomials, represented as lists
     >>> print(poly_mul([1, 2], [2, 3]))
     [2, 7, 6]
     >>> print(poly_mul([1, 2, 3, 4], [8, 9]))
     [8, 25, 42, 59, 36]
     '''
-    i, z = 0, []
-    for x in b:
-        n = []
-        for i in range(i):
-            n.append(0)
-        n.extend(poly_scalar_mul(a, x))
-        z.append(n)
-        i += 1
-    v = []
-    for x in z:
-        v = poly_add(v, x)
+    v = None
+    for a in factors:
+        if v is None:
+            v = a
+        else:
+            v = np.polymul(v, a)
+
     return v
+
 
 if __name__ == '__main__':
     secret = int(input('Enter a secret code (as an integer): '))
