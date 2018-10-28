@@ -100,13 +100,19 @@ def poly_mul(factors):
     return v
 
 if __name__ == '__main__':
-    secret = int(input('Enter a secret code (as an integer): '))
-    num_shares = int(input('Enter the number of shares you want to give out: '))
-    minimum = int(input('Enter the minimum number of people needed to access the secret: '))
+    secret = 314159
+    num_shares = random.randint(5, 10)
+    minimum = num_shares - 2
 
     s = SecretSharingScheme(secret, minimum, num_shares)
-    print(s.polynomial)
-    print(s.shares)
-    test = s.shares[:minimum]
+    print("Hello! " + str(num_shares) + " shares have been handed out.")
 
-    print(recover_secret(test))
+    m = int(input('How many of you are here? '))
+
+    while m < minimum:
+        print("Lagrange interpolation failed. More people are needed to unlock secret.")
+        m = int(input('How many of you are here? '))
+
+    print("Performing Lagrange interpolation with your inputs...")
+    test = s.shares[:m]
+    print("SECRET: " + str(recover_secret(test)))
