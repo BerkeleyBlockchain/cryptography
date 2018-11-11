@@ -17,3 +17,23 @@ Notes:
 - Properties of the elliptic curve
     - Symmetry about the x axis
     - Any non-vertical line will intersect the curve at three points.
+
+
+
+Functions:
+- ECDSA Class
+    - Point_add
+    - Point_scalar_mul
+ 
+- Curve class
+    - Attributes:
+        - a
+        - b
+    -in_it:
+        - check 4a^3 + 27b^2 =! 0
+    - Subclass Finite_curve:
+        - Attribute mod
+        - Max = mod
+        
+        
+      
