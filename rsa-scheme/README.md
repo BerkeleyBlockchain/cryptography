@@ -38,6 +38,18 @@ Attacks:
     - `When encrypting with low encryption exponents (e.g., e = 3) and small values of the m, (i.e., m < n1/e) the result of me is strictly less than the modulus n. In this case, ciphertexts can be easily decrypted by taking the eth root of the ciphertext over the integers.`
     - https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Attacks_against_plain_RSA
 
+Notes:
+- Fermat's Little Theorem: `a^(p - 1) (mod p) = 1` for a, n that are coprime.
+- Chinese Remainder Theorem: makes exponentiation used in RSA much faster
+    - Find an equivalent system of congruences that can be solved for much faster than straight-up exponentiation
+
+1. y = a (mod pq) -> **y_p = a (mod p) -> y_q = a (mod q)**
+2. Reduce bases of the a exponentiation term by the respective moduli
+3. Use Fermat's Little Theorem to reduce the exponents on the a terms.
+4. Take away all multiples of (p - 1) or (q - 1).
+5. Solve the system of congruences.
+    - First, find the
+
 ## Usage
 
 Clone this repository and run `$ python3 rsa.py`

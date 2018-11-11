@@ -32,6 +32,24 @@ class RSA:
         self.public_key = (self.N, self.e)
         self.d = find_inverse(self.totient, self.e)
 
+    def crt(self, base, exp):
+        """
+        Fast method of modular exponentiation using Chinese Remainder Theorem.
+        """
+        base_p = base % self.p
+        base_q = base % self.q
+        exp_p = exp % (self.p - 1)
+        exp_q = exp % (self.q - 1)
+
+        # Calculate system of congruences using greatler reduced exponents
+        base_p = pow(base_p, exp_p, self.p)
+        base_q = pow(base_q, exp_q, self.q)
+        inverse_p = find_inverse(self.p, self.q)
+        inverse_q = find_inverse(self.q, self.p)
+
+        x = base_p * self.q * inverse_p + base_q * self.p * inverse_q
+        return x % self.N
+
     def encrypt(self, message):
         """
         Returns the encryption of a given message:
