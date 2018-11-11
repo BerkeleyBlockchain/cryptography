@@ -35,7 +35,13 @@ class RSA:
     def crt(self, base, exp):
         """
         Fast method of modular exponentiation using Chinese Remainder Theorem.
+        Speeds are comparable to Python's built-in `pow` function.
+
+        >>> test = RSA("test")
+        >>> test.encrypt(123) == test.crt(123, test.e)
+        True
         """
+
         base_p = base % self.p
         base_q = base % self.q
         exp_p = exp % (self.p - 1)
