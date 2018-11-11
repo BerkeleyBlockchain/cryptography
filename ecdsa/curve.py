@@ -36,3 +36,11 @@ class Curve:
         point = (x, y)
         self.history.append(point)
         return point
+
+
+
+
+
+
+    def privKey():
+        return self.history.size()
