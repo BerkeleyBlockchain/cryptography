@@ -27,4 +27,11 @@ class Curve:
 
         else:
             point1, point2 = self.history[0], self.history[len(self.history - 1)]
-            slope = (point1[0] - point2[0]) / (point1[1] - point2[1])
+            m = (point1[1] - point2[1]) / (point1[0] - point2[0])
+
+            x = pow(m, 2) - point1[0] - point2[0]
+            y = point1[1] + m * (x - point1[0])
+
+            point = (x, y)
+            self.history.append(point)
+            return point
