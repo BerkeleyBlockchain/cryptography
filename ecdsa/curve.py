@@ -68,6 +68,9 @@ class Curve:
             self.point_double()
             return self.point_exp(k/2)
 
+    def privKey():
+        return self.history.size()
+
 c = Curve(1, 2)
 d = Curve(1, 2)
 print(c.scalar_mul(5))
