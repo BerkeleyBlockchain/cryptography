@@ -139,8 +139,6 @@ SECP256k1 = finiteCurve("SECP256k1", curve_secp256k1,
 
 """
 
-    def privKey():
-        return self.history.size()
 
 c = Curve(-7, 10)
 
