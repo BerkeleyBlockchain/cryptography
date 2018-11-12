@@ -10,7 +10,8 @@ class Curve:
 
     """
 
-    def __init__(self, a , b):
+    def __init__(self,p, a , b):
+        self.p = p
         self.a = a
         self.b = b
         self.history = [self.get_point(randint(1, 100))]
@@ -35,12 +36,66 @@ class Curve:
 
         point = (x, y)
         self.history.append(point)
-        return point
 
 
 
 
 
 
-    def privKey():
-        return self.history.size()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class finiteCurve:
+    """ A class storing the SECP256k1 curve. Attributes
+    include name, the curve given from..., the generator
+    that returns the initial point, oid??
+    """
+    def __init___(name, curve, generator, oid):
+        self.name = name
+        self.curve = curve
+        self.generator = generator
+        self.oid = oid
+
+
+
+
+"""
+# Specs for secp256-k1
+_a = 0x0000000000000000000000000000000000000000000000000000000000000000
+_b = 0x0000000000000000000000000000000000000000000000000000000000000007
+_p = 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f
+_Gx = 0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798
+_Gy = 0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8
+_r = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
+
+curve_secp256k1 = Curve(_p, _a, _b)
+generator_secp256k1 = ellipticcurve.Point(curve_secp256k1, _Gx, _Gy, _r)
+
+SECP256k1 = finiteCurve("SECP256k1", curve_secp256k1,
+                  ecdsa.generator_secp256k1,
+                  (1, 3, 132, 0, 10), "secp256k1")
+
+"""
+
