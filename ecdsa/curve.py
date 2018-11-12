@@ -13,9 +13,9 @@ class Curve:
     def __init__(self, a , b):
         self.a = a
         self.b = b
-        self.history = [self.get_point(5)]
+        self.history = [self.get_point(1)]
 
-#self.get_point(randint(1, 100))
+
 
     def get_point(self, x):
         y = pow(pow(x, 3) + self.a * x + self.b, 0.5)
@@ -48,6 +48,14 @@ class Curve:
         self.history.append(point)
         return point
 
+    def point_double_mod(self, p):
+        self.point_double()
+        return self.point_mod(p)
+
+    def point_add_mod(self, p):
+        self.point_add()
+        return self.point_mod(p)
+
     def scalar_mul(self, k):
         while k > 1:
             point = self.point_add()
@@ -59,7 +67,6 @@ class Curve:
             return self.history[len(self.history) - 1]
 
         if k % 2 == 1:
-
             self.point_double()
             self.point_exp((k - 1)/2)
             return self.point_add()
@@ -68,10 +75,15 @@ class Curve:
             self.point_double()
             return self.point_exp(k/2)
 
+    def point_mod(self, p):
+        point = self.history[len(self.history) - 1]
+        mod_point = (point[0] % p, point[1] % p)
+        self.history[len(self.history) - 1] = mod_point
+        return mod_point
+
     def privKey():
         return self.history.size()
 
-c = Curve(1, 2)
-d = Curve(1, 2)
-print(c.scalar_mul(5))
-print(d.point_exp(5))
+c = Curve(-7, 10)
+
+print(c.point_add_mod(19))
