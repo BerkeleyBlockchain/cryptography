@@ -23,6 +23,9 @@ class Curve:
         y = pow(pow(x, 3) + self.a * x + self.b, 0.5)
         return (x, y)
 
+    def reset(self, x):
+        self.history = [self.G]
+
     def point_double(self):
         point = self.history[len(self.history) - 1]
         m = (3 * pow(point[0], 2) + self.a) / (2 * point[1])
@@ -125,7 +128,11 @@ class FiniteCurve(Curve):
         the inverse of the point intersected by the line tangent to the current
         point.
 
-        >>>
+        >>> c = FiniteCurve(0, 7, (13, 19), 97, 1)
+        >>> c.point_double()
+        (27, 75)
+        >>> c.point_double()
+        (44, 5)
         """
         point = self.current_point
         m = ((3 * pow(point[0], 2) + self.a) * mod_inverse(self.P, 2 * point[1])) % self.P
@@ -138,15 +145,16 @@ class FiniteCurve(Curve):
     def scalar_mul(self, k):
         """
         Performs point addition k times, using double-and-add to speed up computation.
+
+        >>> c = FiniteCurve(0, 7, (13, 19), 97, 1)
+        >>> c.scalar_mul(20)
+        (61, 28)
         """
         k_bin = str(bin(k))[2:]
         n_bits = len(k_bin)
-        print(n_bits)
         for i in range(1, n_bits):
-            print('Double')
             self.point_double()
             if k_bin[i] == "1":
-                print('Add')
                 self.point_add()
         return self.current_point
 
@@ -205,7 +213,3 @@ class finiteCurve:
 
 """
 
-
-c = Curve(-7, 10)
-
-print(c.point_add_mod(19))
