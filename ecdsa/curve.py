@@ -102,11 +102,16 @@ class FiniteCurve(Curve):
     def point_add(self):
         """
         Performs elliptic curve addition using the given generator point.
+
+        >>> c = FiniteCurve(0, 7, (13, 19), 97, 79)
+        >>> c.point_add()
+        (27, 75)
+        >>> c.point_add()
+        (73, 32)
         """
         if len(self.history) == 1:
             return self.point_double()
         p1, p2 = self.current_point, self.G
-        print(p1, p2)
         m = ((p2[1] - p1[1]) * mod_inverse(self.P, p2[0] - p1[0])) % self.P
         x = (pow(m, 2) - p1[0] - p2[0]) % self.P
         y = (m * (p1[0] - x) - p1[1]) % self.P
@@ -134,13 +139,14 @@ class FiniteCurve(Curve):
         """
         Performs point addition k times, using double-and-add to speed up computation.
         """
-        k_bin = str(bin(k))
-        print(k_bin[2:])
+        k_bin = str(bin(k))[2:]
         n_bits = len(k_bin)
         print(n_bits)
         for i in range(1, n_bits):
+            print('Double')
             self.point_double()
             if k_bin[i] == "1":
+                print('Add')
                 self.point_add()
         return self.current_point
 
