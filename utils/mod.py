@@ -54,17 +54,20 @@ def is_coprime(a, b):
     """
     return gcd(a, b) == 1
 
-def find_inverse(m, x):
+def mod_inverse(m, x):
     """
     Finds the inverse of x mod m, if m and x are coprime.
 
-    >>> find_inverse(35, 12)
+    >>> mod_inverse(35, 12)
     3
-    >>> print(find_inverse(16, 10))
+    >>> print(mod_inverse(16, 10))
     None
     """
-    if not is_coprime(m, x):
-        return None
+    assert m > 0, 'Modulus cannot be <= 0'
+    # if not is_coprime(m, x):
+    #     return None
+    while x < 0:
+        x += m
     d, _, inv = extended_gcd(m, x)
     while inv < 0:
         inv += m

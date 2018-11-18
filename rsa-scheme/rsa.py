@@ -30,7 +30,7 @@ class RSA:
 
         self.e = generate_coprime(self.totient)
         self.public_key = (self.N, self.e)
-        self.d = find_inverse(self.totient, self.e)
+        self.d = mod_inverse(self.totient, self.e)
 
     def crt(self, base, exp):
         """
@@ -50,8 +50,8 @@ class RSA:
         # Calculate system of congruences using greatler reduced exponents
         base_p = pow(base_p, exp_p, self.p)
         base_q = pow(base_q, exp_q, self.q)
-        inverse_p = find_inverse(self.p, self.q)
-        inverse_q = find_inverse(self.q, self.p)
+        inverse_p = mod_inverse(self.p, self.q)
+        inverse_q = mod_inverse(self.q, self.p)
 
         x = base_p * self.q * inverse_p + base_q * self.p * inverse_q
         return x % self.N

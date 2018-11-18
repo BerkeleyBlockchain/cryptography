@@ -1,29 +1,30 @@
+"""curve.py"""
 
+import sys
+sys.path.append('../utils')
 
+from mod import *
 from random import randint
 
 class Curve:
-
     """
+    Class definition for an elliptic curve
     Attributes:
         a, b: coefficients in equation: y^2 = x^3 + ax + b
-
+        G: generator point as a tuple
     """
-
-    def __init__(self,p, a , b):
-        self.p = p
+    def __init__(self, a, b, G):
         self.a = a
         self.b = b
-        self.history = [self.get_point(1)]
-
-
+        self.G = G
+        self.history = [self.G]
 
     def get_point(self, x):
         y = pow(pow(x, 3) + self.a * x + self.b, 0.5)
         return (x, y)
 
     def point_double(self):
-        point =  self.history[len(self.history) - 1]
+        point = self.history[len(self.history) - 1]
         m = (3 * pow(point[0], 2) + self.a) / (2 * point[1])
         x = pow(m, 2) - point[0] - point[0]
         y = -(point[1] + m * (x - point[0]))
@@ -40,7 +41,7 @@ class Curve:
             m = (3 * pow(point1[0], 2) + self.a) / (2 * point1[1])
         else:
             point2 = self.history[len(self.history) - 1]
-            m = (point1[1] - point2     [1]) / (point1[0] - point2[0])
+            m = (point1[1] - point2[1]) / (point1[0] - point2[0])
 
         x = pow(m, 2) - point1[0] - point2[0]
         y = -(point1[1] + m * (x - point1[0]))
@@ -65,12 +66,10 @@ class Curve:
     def point_exp(self, k):
         if k == 1:
             return self.history[len(self.history) - 1]
-
         if k % 2 == 1:
             self.point_double()
-            self.point_exp((k - 1)/2)
+            self.point_exp((k - 1) / 2)
             return self.point_add()
-
         else:
             self.point_double()
             return self.point_exp(k/2)
@@ -81,42 +80,92 @@ class Curve:
         self.history[len(self.history) - 1] = mod_point
         return mod_point
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class finiteCurve:
-    """ A class storing the SECP256k1 curve. Attributes
-    include name, the curve given from..., the generator
-    that returns the initial point, oid??
+class FiniteCurve(Curve):
     """
-    def __init___(name, curve, generator, oid):
-        self.name = name
-        self.curve = curve
-        self.generator = generator
-        self.oid = oid
+    Class definition for a finite elliptic curve, which performs operations
+    such as point addition and scalar multiplication with respect to a modulus P.
+    """
+    def __init__(self, a, b, G, P, N):
+        Curve.__init__(self, a, b, G)
+        self.P = P
+        self.N = N
+
+    @property
+    def current_point(self):
+        assert len(self.history) > 0, 'Error: no generator point'
+        return self.history[len(self.history) - 1]
+
+    @current_point.setter
+    def current_point(self, point):
+        self.history.append(point)
+
+    def point_add(self):
+        """
+        Performs elliptic curve addition using the given generator point.
+        """
+        if len(self.history) == 1:
+            return self.point_double()
+        p1, p2 = self.current_point, self.G
+        print(p1, p2)
+        m = ((p2[1] - p1[1]) * mod_inverse(self.P, p2[0] - p1[0])) % self.P
+        x = (pow(m, 2) - p1[0] - p2[0]) % self.P
+        y = (m * (p1[0] - x) - p1[1]) % self.P
+        added_point = (x, y)
+        self.current_point = added_point
+        return added_point
+
+    def point_double(self):
+        """
+        Doubles a point on an elliptic curve, which is equivalent to finding
+        the inverse of the point intersected by the line tangent to the current
+        point.
+
+        >>>
+        """
+        point = self.current_point
+        m = ((3 * pow(point[0], 2) + self.a) * mod_inverse(self.P, 2 * point[1])) % self.P
+        x = (pow(m, 2) - 2 * point[0]) % self.P
+        y = (m * (point[0] - x) - point[1]) % self.P
+        doubled_point = (x, y)
+        self.current_point = doubled_point
+        return doubled_point
+
+    def scalar_mul(self, k):
+        """
+        Performs point addition k times, using double-and-add to speed up computation.
+        """
+        k_bin = str(bin(k))
+        print(k_bin[2:])
+        n_bits = len(k_bin)
+        print(n_bits)
+        for i in range(1, n_bits):
+            self.point_double()
+            if k_bin[i] == "1":
+                self.point_add()
+        return self.current_point
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -136,6 +185,17 @@ generator_secp256k1 = ellipticcurve.Point(curve_secp256k1, _Gx, _Gy, _r)
 SECP256k1 = finiteCurve("SECP256k1", curve_secp256k1,
                   ecdsa.generator_secp256k1,
                   (1, 3, 132, 0, 10), "secp256k1")
+
+class finiteCurve:
+    ''' A class storing the SECP256k1 curve. Attributes
+    include name, the curve given from..., the generator
+    that returns the initial point, oid??
+    '''
+    def __init___(name, curve, generator, oid):
+        self.name = name
+        self.curve = curve
+        self.generator = generator
+        self.oid = oid
 
 """
 
